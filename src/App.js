@@ -1,9 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react'
 
-import MoviesList from './components/MoviesList';
-import './App.css';
+import MoviesList from './components/MoviesList'
+import './App.css'
 
 function App() {
+  const fetchMovies = async () => {
+    const response = await fetch('https://swapi.dev/api/films/')
+    const data = await response.json()
+    const transformedData = data.results.map((movieData) => {
+      return {
+        id: movieData.episode_id,
+        title: movieData.title,
+        openingText: movieData.opening_crawl,
+        releaseDate: movieData.release_date,
+      }
+    })
+  }
+
   const dummyMovies = [
     {
       id: 1,
@@ -17,18 +30,18 @@ function App() {
       openingText: 'This is the second opening text of the movie',
       releaseDate: '2021-05-19',
     },
-  ];
+  ]
 
   return (
     <React.Fragment>
       <section>
-        <button>Fetch Movies</button>
+        <button onClick={fetchMovies}>Fetch Movies</button>
       </section>
       <section>
         <MoviesList movies={dummyMovies} />
       </section>
     </React.Fragment>
-  );
+  )
 }
 
-export default App;
+export default App
